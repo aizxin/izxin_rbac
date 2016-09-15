@@ -61,14 +61,14 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label" for="message">简要描述:</label>
                                     <div class="col-md-9">
-                                        <textarea v-model="p.description" name="description" class="form-control input" id="message" name="message" rows="4" data-parsley-range="[20,200]"
+                                        <textarea v-model="p.description" name="description" class="form-control input" v-validate:description="{ required: true}" id="message" name="message" rows="4" data-parsley-range="[20,200]"
                                             placeholder="这里填写当前权限的简要描述"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">权限排序:</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="p.sort" name="sort"  value="255" class="form-control input" placeholder="排序号">
+                                        <input type="text" v-model="p.sort" name="sort"  value="255" class="form-control input" placeholder="排序号" v-validate:sort="{ required: true}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -88,6 +88,15 @@
                                         <button @click="addNode()" :disabled="$nodeValidation.invalid" type="button" class="btn btn-success btn-lg m-r-5" style="width: 100px">保 存</button>
                                     </div>
                                 </div>
+                                <div class="form-group" v-if="msg">
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <div class="alert alert-danger fade in m-b-15">
+                                            <strong>Error!</strong>
+                                            <span v-text="msg">.</span>
+                                            <span class="close" data-dismiss="alert">×</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </fieldset>
                         </form>
                     </validator>
@@ -100,27 +109,44 @@
     <!-- end row -->
 </div>
 @endsection @section('my-js')
-<script>
-	$(document).ready(function() {
-		App.init();
-        FormPlugins.init();
-        FormSliderSwitcher.init();
-	});
-    var vn = new Vue({
-        el: '#node',
-        data: {
-            p:{_token:"{{csrf_token()}}"},
-            msg:''
-        },
-        methods: {
-            addNode:function(){
-                this.p.is_menu = this.p.is_menu?1:0;
-                this.$http.post("{{url('/admin/permission/store')}}",this.p).then(function (response){
-                    console.log(response)
-                }, function (response) {
-                    console.log(response)
-                });
+    <!-- ================== Vue JS ================== -->
+    <script src="/layer/layer.js"></script>
+    <!-- ================== END vue JS ================== -->
+    <script>
+    	$(document).ready(function() {
+    		App.init();
+            FormPlugins.init();
+            FormSliderSwitcher.init();
+    	});
+        var vn = new Vue({
+            el: '#node',
+            data: {
+                p:{_token:"{{csrf_token()}}"},
+                msg:''
+            },
+            methods: {
+                addNode:function(){
+                    this.p.is_menu = this.p.is_menu?1:0;
+                    this.$http.post("{{url('/admin/permission/store')}}",this.p).then(function (response){
+                        if(response.data.code == 400){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 422){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 200){
+                            var ii = layer.load();
+                            //此处用setTimeout演示ajax的回调
+                            setTimeout(function(){
+                                layer.close(ii);
+                                window.location.href = "{{url('/admin/permission/index')}}";
+                            }, 3000);
+                        }
+                    }, function (response) {
+                        console.log(response)
+                    });
+                }
             }
-        }
-    });
-</script> @endsection
+        });
+    </script>
+@endsection

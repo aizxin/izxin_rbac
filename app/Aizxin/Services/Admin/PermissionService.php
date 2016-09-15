@@ -36,7 +36,7 @@ class PermissionService extends CommonService
         $data = $request->all();
         try {
             $this->validator->with( $data )->passesOrFail( ValidatorInterface::RULE_CREATE );
-            if( $this->$repository->create( $data )){
+            if( $this->repository->create( $data )){
                 return $this->respondWithSuccess(1, '添加成功');
             }
             return $this->respondWithErrors('添加失败',400);
