@@ -1,5 +1,5 @@
 # izxin
-laravel 5.2.* 的cms
+laravel 5.2.* 
 [cms的设计思想](http://oomusou.io/laravel/laravel-architecturewww)
 ![](http://oomusou.io/images/laravel/laravel-architecture/arch002.svg)
 #1、 验证 prettus/laravel-validation
