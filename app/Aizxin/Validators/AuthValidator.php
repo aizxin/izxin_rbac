@@ -11,8 +11,8 @@ class AuthValidator extends LaravelValidator {
     *  @var [type]
     */
     protected $rules = [
-        'email' => ['required', 'email', 'exists:admins'], //查询用户
-        // 'email' => ['required', 'email', 'unique:admins'], //创建用户
+        'email' => ['required', 'email', 'exists:users'], //查询用户
+        // 'email' => ['required', 'email', 'unique:users'], //创建用户
         // 'email' => ['required', 'mobile_phone'],
         'password' => ['required', 'between:6,16'],
     ];

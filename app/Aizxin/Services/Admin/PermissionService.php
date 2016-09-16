@@ -46,15 +46,14 @@ class PermissionService extends CommonService
         }
     }
     /**
-     *  [find description]
+     *  [getPermissionParent 顶级权限]
      *  izxin.com
      *  @author qingfeng
-     *  @DateTime 2016-09-15T11:19:55+0800
-     *  @param    [type]                   $id [description]
-     *  @return   [type]                       [description]
+     *  @DateTime 2016-09-16T13:27:52+0800
+     *  @return   [type]                   [description]
      */
-    public function find($id)
+    public function getPermissionParent()
     {
-        return $this->$repository->find($id);
+        return $this->repository->getPermissionParent();
     }
 }

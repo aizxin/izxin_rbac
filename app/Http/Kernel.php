@@ -51,6 +51,8 @@ class Kernel extends HttpKernel
 
         // 后台登录
         'admin.auth' => \App\Http\Middleware\AdminAuthMiddleware::class,
+        // 后台登录
+        'role.auth' => \App\Http\Middleware\RoleAuthMiddleware::class,
 
         // 权限
         'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,

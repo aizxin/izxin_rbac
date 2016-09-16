@@ -41,8 +41,14 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label ">上级权限:</label>
                                     <div class="col-md-9">
-                                        <select class="form-control selectpicker input" v-model="p.parent_id" data-size="10" data-live-search="true" data-style="btn-white">
+                                        <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="p.parent_id" data-live-search="true" data-style="btn-white">
                                         <option value="0" selected>顶级权限</option>
+                                        @foreach($list as $vo)
+                                        <option value="{{$vo['id']}}">{{$vo['display_name']}}</option>
+                                        @foreach($vo['child'] as $v)
+                                        <option value="{{$v['id']}}">--{{$v['display_name']}}</option>
+                                        @endforeach
+                                        @endforeach
                                     </select>
                                     </div>
                                 </div>
@@ -83,11 +89,13 @@
                                         <input type="checkbox" v-model="p.is_menu"  data-render="switchery" data-theme="default"  />
                                     </div>
                                 </div>
+                                @permission('admin.permission.store')
                                 <div class="form-group">
                                     <div class="col-md-9 col-md-offset-3">
                                         <button @click="addNode()" :disabled="$nodeValidation.invalid" type="button" class="btn btn-success btn-lg m-r-5" style="width: 100px">保 存</button>
                                     </div>
                                 </div>
+                                @endpermission
                                 <div class="form-group" v-if="msg">
                                     <div class="col-md-9 col-md-offset-3">
                                         <div class="alert alert-danger fade in m-b-15">
@@ -118,7 +126,7 @@
             FormPlugins.init();
             FormSliderSwitcher.init();
     	});
-        var vn = new Vue({
+        new Vue({
             el: '#node',
             data: {
                 p:{_token:"{{csrf_token()}}"},
@@ -126,6 +134,7 @@
             },
             methods: {
                 addNode:function(){
+                    this.p.parent_id = $("#parent_id").val();
                     this.p.is_menu = this.p.is_menu?1:0;
                     this.$http.post("{{url('/admin/permission/store')}}",this.p).then(function (response){
                         if(response.data.code == 400){

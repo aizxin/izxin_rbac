@@ -36,13 +36,15 @@
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
-                                            </select> 
+                                            </select>
+                                            @permission('admin.permission.create')
                                             <a href="{{url('admin/permission/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
+                                            @endpermission
                                         </label>
                             </div>
                             <div id="data-table_filter" class="dataTables_filter">
                                 <label>查询:<input type="search" class="" placeholder="" aria-controls="data-table">
-                                            </label>
+                                </label>
                             </div>
                             <table id="data-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="data-table_info">
                                 <thead>

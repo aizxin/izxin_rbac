@@ -35,6 +35,16 @@ class PermissionController extends Controller
         return view('admin.permission.index');
     }
     /**
+     *  [show description]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-16T20:54:39+0800
+     *  @return   [type]                   [description]
+     */
+    public function show(){
+        return
+    }
+    /**
      *  [权限节点  添加]
      *  izxin.com
      *  @author qingfeng
@@ -43,7 +53,8 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('admin.permission.add');
+        $list = $this->service->getPermissionParent();
+        return view('admin.permission.add',compact('list'));
     }
     /**
      *  [权限节点  保存]

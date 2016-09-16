@@ -75,7 +75,7 @@ return [
         ],
         'admins' => [
             'driver' => 'eloquent',
-            'model' => Aizxin\Models\Admin::class,
+            'model' => Aizxin\Models\User::class,
         ],
 
         // 'users' => [

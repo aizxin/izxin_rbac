@@ -20,13 +20,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
     // // 注销
     Route::get('logout', 'AuthController@logout')->name('admin.logout');
     // // 已经登录
-    Route::group(['middleware' => ['admin.auth']], function () {
-        // 后台首页
-        Route::get('/', 'AdminController@index')->name('admin.index');
+    Route::group(['middleware' => ['admin.auth','role.auth:admin']], function () {
+        // 后台首页->name('index')
+        Route::get('/', 'AdminController@index')->name('admin.index.index');
         // 后台权限节点
-        Route::get('permission/index', 'PermissionController@index')->name('permission.index');
-        Route::get('permission/create', 'PermissionController@create')->name('permission.create');
-        Route::post('permission/store', 'PermissionController@store')->name('permission.store');
+        Route::get('permission/index', 'PermissionController@index')->name('admin.permission.index');
+        Route::post('permission/store', 'PermissionController@store')->name('admin.permission.store');
+        // Route::get('permission/create', 'PermissionController@create')->name('admin.permission.create');
+        Route::resource('permission','PermissionController');
     });
 });
 

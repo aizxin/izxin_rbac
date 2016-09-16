@@ -3,7 +3,7 @@ namespace Aizxin\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class Admin extends Authenticatable
+class User extends Authenticatable
 {
     use EntrustUserTrait;
     /**
