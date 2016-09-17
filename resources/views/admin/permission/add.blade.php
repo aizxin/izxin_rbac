@@ -42,11 +42,20 @@
                                     <label class="col-md-3 control-label ">上级权限:</label>
                                     <div class="col-md-9">
                                         <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="p.parent_id" data-live-search="true" data-style="btn-white">
-                                        <option value="0" selected>顶级权限</option>
+                                        <option value="0">顶级权限</option>
                                         @foreach($list as $vo)
+                                        @if($vo['id']==$rule['parent_id'])
+                                        <option value="{{$vo['id']}}" selected>{{$vo['display_name']}}</option>
+                                        @else
                                         <option value="{{$vo['id']}}">{{$vo['display_name']}}</option>
+                                        @endif
+                                        <option value="{{$vo['id']}}" >{{$vo['display_name']}}</option>
                                         @foreach($vo['child'] as $v)
-                                        <option value="{{$v['id']}}">--{{$v['display_name']}}</option>
+                                        @if($v['id']==$rule['parent_id'])
+                                        <option value="{{$v['id']}}" selected>{{$v['display_name']}}</option>
+                                        @else
+                                        <option value="{{$v['id']}}">{{$v['display_name']}}</option>
+                                        @endif
                                         @endforeach
                                         @endforeach
                                     </select>
@@ -74,7 +83,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">权限排序:</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-model="p.sort" name="sort"  value="255" class="form-control input" placeholder="排序号" v-validate:sort="{ required: true}">
+                                        <input type="text" v-model="p.sort" name="sort" class="form-control input" placeholder="排序号" v-validate:sort="{ required: true}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -127,10 +136,19 @@
             FormSliderSwitcher.init();
     	});
         new Vue({
+            http: {
+                root: '/root',
+                headers: {
+                    'X-CSRF-TOKEN': "{{csrf_token()}}"
+                }
+            },
             el: '#node',
             data: {
-                p:{_token:"{{csrf_token()}}"},
+                p:{},
                 msg:''
+            },
+            created: function (){
+                this.$set('p',{!! $rules !!})
             },
             methods: {
                 addNode:function(){

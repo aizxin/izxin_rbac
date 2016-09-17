@@ -11,5 +11,5 @@ class Permission extends EntrustPermission
     protected $fillable = ['name','display_name','description','is_menu','parent_id','sort','icon'];
 
     /** @var [type] [description] */
-    protected $visible = ['id', 'display_name','parent_id'];
+    // protected $visible = ['id', 'display_name','parent_id','sort'];
 }

@@ -27,7 +27,7 @@ class AuthController extends Controller
     {
         // 已经登录则直接跳转
         if (Auth::user()) {
-            return redirect()->route('admin.index');
+            return redirect()->route('admin.index.index');
         }
         if ($request->isMethod('get')) {
             return view('admin.auth.login');

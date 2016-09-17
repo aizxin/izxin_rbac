@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2016-09-16 16:55:30
+Date: 2016-09-17 17:31:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of permissions
@@ -74,6 +74,12 @@ INSERT INTO `permissions` VALUES ('2', '0', 'admin.article.manage', '文章管�
 INSERT INTO `permissions` VALUES ('3', '0', 'admin.rbac.manage', '权限管理', '权限管理', '1', 'fa fa-users', '2', '2016-09-16 05:59:50', '2016-09-16 05:59:50');
 INSERT INTO `permissions` VALUES ('4', '1', 'admin.index.index', '后台主页', '后台主页', '1', null, '1', '2016-09-16 06:01:41', '2016-09-16 06:01:41');
 INSERT INTO `permissions` VALUES ('5', '3', 'admin.user.index', '管理员列表', '管理员列表', '1', null, '1', '2016-09-16 07:26:15', '2016-09-16 07:26:15');
+INSERT INTO `permissions` VALUES ('7', '3', 'admin.permission.index', '权限列表', '权限列表', '1', null, '3', '2016-09-16 19:12:43', '2016-09-16 19:12:46');
+INSERT INTO `permissions` VALUES ('8', '7', 'admin.permission.create', '新增权限视图', '新增权限视图', '0', null, '255', '2016-09-16 12:38:53', '2016-09-16 12:38:53');
+INSERT INTO `permissions` VALUES ('9', '7', 'admin.permission.store', '新增权限操作', '新增权限操作', '0', null, '255', '2016-09-16 12:40:32', '2016-09-16 12:40:32');
+INSERT INTO `permissions` VALUES ('10', '7', 'admin.permission.edit', '编辑权限视图', '编辑权限视图', '0', null, '255', '2016-09-16 12:41:54', '2016-09-16 12:41:54');
+INSERT INTO `permissions` VALUES ('11', '7', 'admin.permission.update', '编辑权限操作', '编辑权限操作', '0', null, '255', '2016-09-16 12:42:25', '2016-09-16 12:42:25');
+INSERT INTO `permissions` VALUES ('6', '3', 'admin.role.index', '角色列表', '角色列表', '1', null, '2', '2016-09-16 13:23:47', '2016-09-16 13:23:47');
 
 -- ----------------------------
 -- Table structure for permission_role
@@ -94,6 +100,10 @@ INSERT INTO `permission_role` VALUES ('2', '1');
 INSERT INTO `permission_role` VALUES ('3', '1');
 INSERT INTO `permission_role` VALUES ('4', '1');
 INSERT INTO `permission_role` VALUES ('5', '1');
+INSERT INTO `permission_role` VALUES ('6', '1');
+INSERT INTO `permission_role` VALUES ('7', '1');
+INSERT INTO `permission_role` VALUES ('8', '1');
+INSERT INTO `permission_role` VALUES ('9', '1');
 
 -- ----------------------------
 -- Table structure for roles
@@ -150,4 +160,4 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', 'nRoRznCq26GhWNoF4gZSuJd5Y4y0wSJPM8M3PggJPpdm03ZdUrIdLoCeq6uE', '2016-09-01 08:17:57', '2016-09-16 08:38:38');
+INSERT INTO `users` VALUES ('1', 'admin', 'admin@admin.com', '$2y$10$uyMqZp3BjFHKvf.mxhIQfOPoppPaZZ5N0FxfIMJALtxAhJbD5xed6', '7DiRqn3STqzeJtOpWNou2UwUuE2N8d45gcghD4KzJ6GvFoSrNqBGrv0Ih1zA', '2016-09-01 08:17:57', '2016-09-16 13:12:52');

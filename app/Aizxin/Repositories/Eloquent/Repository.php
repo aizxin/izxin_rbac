@@ -59,8 +59,8 @@ abstract class Repository implements RepositoryInterface
 	*
 	* @return mixed
 	*/
-	public function findByField($field, $value, $columns = ['*']){
-		return $this->model->select($columns)->where($field,$value)->get();
+	public function findByField($field, $value, $sort = 'id', $sc = 'desc', $columns = ['*']){
+		return $this->model->select($columns)->where($field,$value)->orderBy($sort,$sc)->get();
 	}
 	/**
 	* Find data by multiple fields

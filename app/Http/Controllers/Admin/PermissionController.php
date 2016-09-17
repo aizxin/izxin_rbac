@@ -30,8 +30,11 @@ class PermissionController extends Controller
      *  @DateTime 2016-09-10T11:02:33+0800
      *  @return   [type]                   [description]
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax()){
+            return $this->service->getPermissionList($request);
+        }
         return view('admin.permission.index');
     }
     /**
@@ -42,7 +45,7 @@ class PermissionController extends Controller
      *  @return   [type]                   [description]
      */
     public function show(){
-        return
+        return;
     }
     /**
      *  [权限节点  添加]
@@ -53,8 +56,10 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        $rule = ['parent_id'=>0];
         $list = $this->service->getPermissionParent();
-        return view('admin.permission.add',compact('list'));
+        $rules = json_encode($rule);
+        return view('admin.permission.add',compact('list','rules'))->with('rule',$rule);
     }
     /**
      *  [权限节点  保存]
@@ -65,6 +70,46 @@ class PermissionController extends Controller
      *  @return   [type]                            [description]
      */
     public function store(Request $request)
+    {
+        return $this->service->create($request);
+    }
+    /**
+     *  [edit 修改权限]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-17T18:48:37+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
+    public function edit($id)
+    {
+        $rule = $this->service->find($id);
+        $list = $this->service->getPermissionParent();
+        $rules = json_encode($rule);
+        // dd($rule);
+        return view('admin.permission.add',compact('list','rules'))->with('rule',$rule);
+    }
+    /**
+     *  [destroy 删除权限]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-17T17:04:59+0800
+     *  @return   [type]                   [description]
+     */
+    public function destroy($id)
+    {
+        return $this->service->destroy($id);
+    }
+    /**
+     *  [update 权限修改操作]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-18T00:21:20+0800
+     *  @param    Request                  $request [description]
+     *  @param    [type]                   $id      [description]
+     *  @return   [type]                            [description]
+     */
+    public function update(Request $request,$id)
     {
         return $this->service->create($request);
     }
