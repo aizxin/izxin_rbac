@@ -54,15 +54,21 @@ class MenuPresenter
 	 */
 	public function sidebarMenus($menus)
 	{
-		// $currRouteName = \Route::currentRouteName(); // 当前路由别名
 		$rule = $this->menu->getMenuId(\Route::currentRouteName());
+		$parent = array();
+		if($rule['zMenu']['parent_id'] > 0){
+			$parent = $rule['fMenu'];
+		}
+		$child = $rule['zMenu'];
 		$html = '';
 		$active = '';
 		if ($menus) {
 			foreach ($menus as $v) {
 				if (auth()->user()->can($v['name'])) {
-					if($v['id'] == $rule['parent_id']){
+					if($v['id'] == $child['parent_id'] || $parent['parent_id'] == $v['id']){
 						$active = 'active';
+					}else{
+						$active = '';
 					}
 					$html .= '<li class="has-sub '.$active.'">';
 					if ($v['child']) {
@@ -71,13 +77,12 @@ class MenuPresenter
 						    $html .= '<i class="'.$v['icon'].'"></i>';
 						    $html .= '<span>'.$v['display_name'].'</span>';
 					    $html .= '</a>';
-					    $html .= $this->getSidebarChildMenu($v['child'],$rule);
+					    $html .= $this->getSidebarChildMenu($v['child'],$child,$parent);
 					}
 					$html .= '</li>';
 				}
 			}
 		}
-		// $html .= '<li class="has-sub">'.$rule['name'].'</li>';
 		return $html;
 	}
 	/**
@@ -88,7 +93,7 @@ class MenuPresenter
 	 *  @param    string                   $childMenu [description]
 	 *  @return   [type]                              [description]
 	 */
-	public function getSidebarChildMenu($childMenu='',$rule)
+	public function getSidebarChildMenu($childMenu='',$child,$parent = array())
 	{
 		$html = '';
 		$active = '';
@@ -96,8 +101,10 @@ class MenuPresenter
 			$html .= '<ul class="sub-menu">';
 			foreach ($childMenu as $v) {
 				if (auth()->user()->can($v['name'])) {
-					if($v['id'] == $rule['id']){
+					if($v['id'] == $child['id'] || $child['parent_id'] == $v['id']){
 						$active = 'active';
+					}else{
+						$active = '';
 					}
 					$html .= '<li class="'.$active.'"><a href="'.\URL::route($v['name']).'">'.$v['display_name'].'</a></li>';
 				}

@@ -145,7 +145,13 @@ class PermissionRepository extends Repository
 	 */
 	public function getMenuId($name)
 	{
-		$data = $this->findByField('name',$name)->toArray();
-		return $data[0];
+		$arr = [];
+		$zdata = $this->findByField('name',$name)->toArray();
+		$arr['zMenu'] = $zdata[0];
+		if($arr['zMenu']['parent_id'] > 0){
+			$fdata = $this->findByField('id',$arr['zMenu']['parent_id'])->toArray();
+			$arr['fMenu'] = $fdata[0];
+		}
+		return $arr;
 	}
 }
