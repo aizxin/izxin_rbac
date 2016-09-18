@@ -5,16 +5,16 @@ use Aizxin\Repositories\Eloquent\Admin\PermissionRepository;
 class MenuPresenter
 {
 	/**
-     * 用户仓库实现.
+     * 权限仓库实现.
      *
-     * @var UserRepository
+     * @var PermissionRepository
      */
     protected $menu;
 
     /**
      * 创建一个新的属性composer.
      *
-     * @param UserRepository $menu
+     * @param PermissionRepository $menu
      * @return void
      */
     public function __construct(PermissionRepository $menu)

@@ -9,8 +9,18 @@ use Aizxin\Services\CommonService;
 
 class AuthService extends CommonService
 {
+    /**
+     *  [$validator description]
+     *  @var [type]
+     */
     protected $validator;
-
+    /**
+     *  [__construct description]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-18T23:52:05+0800
+     *  @param    AuthValidator            $validator [description]
+     */
     public function __construct(AuthValidator $validator)
     {
         $this->validator  = $validator;

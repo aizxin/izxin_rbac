@@ -6,11 +6,45 @@ use Aizxin\Models\Permission;
 use Cache;
 class PermissionRepository extends Repository
 {
+	/**
+	 *  [model description]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-18T23:49:19+0800
+	 *  @return   [type]                   [description]
+	 */
 	public function model()
 	{
 		return Permission::class;
 	}
-	public $fillable = ['id', 'display_name','parent_id','sort','name'];
+	/**
+	 *  [$fillable description]
+	 *  @var [type]
+	 */
+	public $fillable = ['id', 'display_name','parent_id','sort','name','icon'];
+	/**
+	 *  [sortMenu description]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-18T22:19:20+0800
+	 *  @param    [type]                   $menus [description]
+	 *  @param    integer                  $pid   [description]
+	 *  @return   [type]                          [description]
+	 */
+	public function sortMenu($menus,$pid=0)
+	{
+		$arr = [];
+		if (empty($menus)) {
+			return '';
+		}
+		foreach ($menus as $key => $v) {
+			if ($v['parent_id'] == $pid) {
+				$arr[$key] = $v;
+				$arr[$key]['child'] = self::sortMenu($menus,$v['id']);
+			}
+		}
+		return $arr;
+	}
 	/**
 	 *  [getPermissionParent 顶级权限]
 	 *  izxin.com
@@ -21,14 +55,58 @@ class PermissionRepository extends Repository
 	 */
 	public function getPermissionParent($parent = 0)
 	{
-		$data = $this->findByField('parent_id',0,'sort','asc',$this->fillable)->toArray();
-		if (empty($data)) {
-            return [];
-        }
-		foreach ($data as $key => $rule) {
-            $data[$key]['child'] = $this->findByField('parent_id',$rule['id'],'sort','asc',$this->fillable)->toArray();
-        }
-        return $data;
+		return $this->menu('is_menu',1);
+	}
+	/**
+	 *  [menu description]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-18T22:26:15+0800
+	 *  @return   [type]                   [description]
+	 */
+	public function menu($field, $value)
+	{
+		$menus = $this->model
+				->select($this->fillable)
+				->where($field,$value)
+				->orderBy('sort','asc')
+				->get()
+				->toArray();
+		if($menus){
+			$menuList = $this->sortMenu($menus);
+			foreach ($menuList as $key => &$v) {
+				if ($v['child']) {
+					$sort = array_column($v['child'], 'sort');
+					array_multisort($sort,SORT_ASC,$v['child']);
+				}
+			}
+			return $menuList;
+		}
+		return [];
+	}
+	/**
+	 *  [childMenu description]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-18T23:39:56+0800
+	 *  @param    [type]                   $menus [description]
+	 *  @param    integer                  $pid   [description]
+	 *  @return   [type]                          [description]
+	 */
+	public function childMenu($menus,$pid=0)
+	{
+		$arr = [];
+		if (empty($menus)) {
+			return '';
+		}
+		foreach ($menus as $key => $rule) {
+			$menuslist = $this->findByField('parent_id',$rule['id'],'sort','asc',$this->fillable)->toArray();
+			if ($rule['parent_id'] == $pid) {
+				$arr[$key] = $rule;
+				$arr[$key]['child'] = self::childMenu($menuslist,$rule['id']);
+			}
+		}
+		return $arr;
 	}
 	/**
 	 *  [getPermissionList 权限列表]
@@ -48,14 +126,7 @@ class PermissionRepository extends Repository
 		   ->paginate($request['pageSize'])
 		   ->toArray();
 		if(count($results['data'])){
-			foreach ($results['data'] as $k => $rule) {
-            	$results['data'][$k]['child'] = $this->findByField('parent_id',$rule['id'],'sort','asc',$this->fillable)->toArray();
-            	if(count($results['data'][$k]['child'])){
-			        foreach ($results['data'][$k]['child'] as $y => $r) {
-			            $results['data'][$k]['child'][$y]['child'] = $this->findByField('parent_id',$r['id'],'sort','asc',$this->fillable)->toArray();
-			        }
-            	}
-        	}
+			$results['data'] = $this->childMenu($results['data']);
 		}
 		$response = [
 	        'pagination' => [
@@ -69,21 +140,6 @@ class PermissionRepository extends Repository
 	        'data' => $results['data']
 	    ];
     	return $response;
-	}
-	/**
-	 *  [getChild 获取子节点]
-	 *  izxin.com
-	 *  @author qingfeng
-	 *  @DateTime 2016-09-17T14:23:53+0800
-	 *  @param    [type]                   $data [description]
-	 *  @return   [type]                         [description]
-	 */
-	public function getChild($data)
-	{
-		foreach ($data as $key => $rule) {
-            $data[$key]['child'] = $this->findByField('parent_id',$rule['id'],'sort','asc',$this->fillable)->toArray();
-        }
-        return $data;
 	}
 	/**
 	 *  [destroyPermission 删除权限]
@@ -119,25 +175,24 @@ class PermissionRepository extends Repository
 	}
 	/**
 	 *  [getMenu 左侧菜单]
-	 *  臭虫科技
+	 *  izxin.com
 	 *  @author chouchong
 	 *  @DateTime 2016-09-18T17:41:51+0800
 	 *  @return   [type]                   [description]
 	 */
 	public function getMenu()
 	{
-		$data = $this->findByField('parent_id',0,'sort','asc')->toArray();
-		if (empty($data)) {
-            return [];
-        }
-		foreach ($data as $key => $rule) {
-            $data[$key]['child'] = $this->findByField('parent_id',$rule['id'],'sort','asc')->toArray();
-        }
+		if (Cache::has(config('admin.globals.cache.menu'))) {
+		    return Cache::get(config('admin.globals.cache.menu'));
+		}
+		$data = $this->menu('is_menu',1);
+        // 缓存菜单数据
+		Cache::forever(config('admin.globals.cache.menu'),$data);
         return $data;
 	}
 	/**
 	 *  [getMenuId 当前的url的id和父级id]
-	 *  臭虫科技
+	 *  izxin.com
 	 *  @author chouchong
 	 *  @DateTime 2016-09-18T18:33:01+0800
 	 *  @param    [type]                   $name [description]
