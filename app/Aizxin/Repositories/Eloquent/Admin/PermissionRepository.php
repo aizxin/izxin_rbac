@@ -10,7 +10,7 @@ class PermissionRepository extends Repository
 	{
 		return Permission::class;
 	}
-	public $fillable = ['id', 'display_name','parent_id','sort'];
+	public $fillable = ['id', 'display_name','parent_id','sort','name'];
 	/**
 	 *  [getPermissionParent 顶级权限]
 	 *  izxin.com
@@ -113,7 +113,7 @@ class PermissionRepository extends Repository
 	 *  @param    [type]                   $id [description]
 	 *  @return   [type]                       [description]
 	 */
-	public function editMenu($id)
+	public function findPermission($id)
 	{
 		return $this->model->find($id)->toArray();
 	}

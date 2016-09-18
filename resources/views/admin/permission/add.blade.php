@@ -49,12 +49,11 @@
                                         @else
                                         <option value="{{$vo['id']}}">{{$vo['display_name']}}</option>
                                         @endif
-                                        <option value="{{$vo['id']}}" >{{$vo['display_name']}}</option>
                                         @foreach($vo['child'] as $v)
                                         @if($v['id']==$rule['parent_id'])
-                                        <option value="{{$v['id']}}" selected>{{$v['display_name']}}</option>
+                                        <option value="{{$v['id']}}" selected>┗━{{$v['display_name']}}</option>
                                         @else
-                                        <option value="{{$v['id']}}">{{$v['display_name']}}</option>
+                                        <option value="{{$v['id']}}">┗━{{$v['display_name']}}</option>
                                         @endif
                                         @endforeach
                                         @endforeach
@@ -151,10 +150,37 @@
                 this.$set('p',{!! $rules !!})
             },
             methods: {
-                addNode:function(){
+                addNode: function() {
                     this.p.parent_id = $("#parent_id").val();
                     this.p.is_menu = this.p.is_menu?1:0;
-                    this.$http.post("{{url('/admin/permission/store')}}",this.p).then(function (response){
+                    if(this.p.id != undefined && this.p.id > 0){
+                        this.updateNode(this.p);
+                    }else{
+                        this.createNode(this.p);
+                    }
+                },
+                createNode: function (data){
+                    this.$http.post("{{url('/admin/permission/store')}}",data).then(function (response){
+                        if(response.data.code == 400){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 422){
+                            this.msg = response.data.message
+                        }
+                        if(response.data.code == 200){
+                            var ii = layer.load();
+                            //此处用setTimeout演示ajax的回调
+                            setTimeout(function(){
+                                layer.close(ii);
+                                window.location.href = "{{url('/admin/permission/index')}}";
+                            }, 3000);
+                        }
+                    }, function (response) {
+                        console.log(response)
+                    });
+                },
+                updateNode: function (data){
+                    this.$http.put("{{url('/admin/permission/')}}/"+data.id,data).then(function (response){
                         if(response.data.code == 400){
                             this.msg = response.data.message
                         }

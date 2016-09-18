@@ -59,6 +59,7 @@ class PermissionController extends Controller
         $rule = ['parent_id'=>0];
         $list = $this->service->getPermissionParent();
         $rules = json_encode($rule);
+        // dd($list);
         return view('admin.permission.add',compact('list','rules'))->with('rule',$rule);
     }
     /**

@@ -105,7 +105,16 @@ abstract class Repository implements RepositoryInterface
 	* @return mixed
 	*/
 	public function update(array $attributes, $id){
-
+		$model = new $this->model;
+		$data = $model->find($id);
+		if ($data) {
+			$isUpdate = $data->update($attributes);
+			if ($isUpdate) {
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 	/**
 	* Update or Create an entity in repository

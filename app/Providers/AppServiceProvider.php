@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(
             'layouts.admin', 'App\Http\ViewComposers\AdminComposer'
         );
+        // 菜单共享
+        view()->composer(
+            'layouts.admin', 'App\Http\ViewComposers\MenuComposer'
+        );
     }
 
     /**
