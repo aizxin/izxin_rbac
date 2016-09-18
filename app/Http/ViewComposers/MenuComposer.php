@@ -19,9 +19,8 @@ class MenuComposer
      * @param UserRepository $menu
      * @return void
      */
-    public function __construct(MenuRepository $menu)
+    public function __construct(PermissionRepository $menu)
     {
-        // Dependencies automatically resolved by service container...
         $this->menu = $menu;
     }
 
@@ -33,6 +32,6 @@ class MenuComposer
      */
     public function compose(View $view)
     {
-        $view->with('slidebarMenus', $this->menu->getPermissionParent());
+        $view->with('slidebar', $this->menu->getMenu());
     }
 }

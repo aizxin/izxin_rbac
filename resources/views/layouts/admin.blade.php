@@ -164,14 +164,15 @@
 			<!-- end container-fluid -->
 		</div>
 		<!-- end #header -->
-		
 		<!-- begin #sidebar -->
 		<div id="sidebar" class="sidebar">
 			<!-- begin sidebar scrollbar -->
 			<div data-scrollbar="true" data-height="100%">
 				<ul class="nav">
+					@inject('menu','Aizxin\Presenters\Admin\MenuPresenter')
 					<li class="nav-header">管理主面板</li>
-					<li class="has-sub active">
+					{!!$menu->sidebarMenus($slidebar)!!}
+					<!-- <li class="has-sub active">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
 						    <i class="fa fa-laptop"></i>
@@ -217,7 +218,7 @@
 						    <li><a href="email_inbox_v2.html">用户列表</a></li>
 						    <li><a href="email_compose.html">角色列表</a></li>
 						</ul>
-					</li>
+					</li> -->
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
 			        <!-- end sidebar minify button -->

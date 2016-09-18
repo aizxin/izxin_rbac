@@ -33,6 +33,7 @@ class RoleAuthMiddleware
      */
     public function handle($request, Closure $next, $permissions)
     {
+        // dd($this->auth->user()->hasRole('admin'));
         $currRouteName = Route::currentRouteName(); // 当前路由别名
         $previousUrl = URL::previous(); // 用户访问的上一页
         if(!$this->auth->user()->can($currRouteName) ){ // 如果是游客或者没有权限跳转到首页

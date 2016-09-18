@@ -27,6 +27,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
         Route::any('permission/index', 'PermissionController@index')->name('admin.permission.index');
         Route::post('permission/store', 'PermissionController@store')->name('admin.permission.store');
         Route::resource('permission','PermissionController');
+        // 后台角色
+        Route::any('role/index', 'RoleController@index')->name('admin.role.index');
+        Route::post('role/store', 'RoleController@store')->name('admin.role.store');
+        Route::resource('role','RoleController');
+        // 管理员
+        Route::any('user/index', 'UserController@index')->name('admin.user.index');
+        Route::post('user/store', 'UserController@store')->name('admin.user.store');
+        Route::resource('user','UserController');
     });
 });
 

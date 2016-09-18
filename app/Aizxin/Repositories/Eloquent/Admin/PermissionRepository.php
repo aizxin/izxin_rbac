@@ -117,4 +117,35 @@ class PermissionRepository extends Repository
 	{
 		return $this->model->find($id)->toArray();
 	}
+	/**
+	 *  [getMenu 左侧菜单]
+	 *  臭虫科技
+	 *  @author chouchong
+	 *  @DateTime 2016-09-18T17:41:51+0800
+	 *  @return   [type]                   [description]
+	 */
+	public function getMenu()
+	{
+		$data = $this->findByField('parent_id',0,'sort','asc')->toArray();
+		if (empty($data)) {
+            return [];
+        }
+		foreach ($data as $key => $rule) {
+            $data[$key]['child'] = $this->findByField('parent_id',$rule['id'],'sort','asc')->toArray();
+        }
+        return $data;
+	}
+	/**
+	 *  [getMenuId 当前的url的id和父级id]
+	 *  臭虫科技
+	 *  @author chouchong
+	 *  @DateTime 2016-09-18T18:33:01+0800
+	 *  @param    [type]                   $name [description]
+	 *  @return   [type]                         [description]
+	 */
+	public function getMenuId($name)
+	{
+		$data = $this->findByField('name',$name)->toArray();
+		return $data[0];
+	}
 }
