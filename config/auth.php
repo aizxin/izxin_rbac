@@ -72,10 +72,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+            'table' => 'users',
         ],
         'admins' => [
             'driver' => 'eloquent',
             'model' => Aizxin\Models\User::class,
+            'table' => 'users',
         ],
 
         // 'users' => [

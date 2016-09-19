@@ -58,8 +58,6 @@
                                             colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">权限管理</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
                                             colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
-                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,8 +78,6 @@
                                                 <span>修改</span>
                                                 </a>
                                                  @endpermission
-                                            </td>
-                                            <td>
                                                  @permission('admin.permission.edit')
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
@@ -289,7 +285,7 @@ var vn = new Vue({
              *  [destroy 删除权限]
              */
             destroy:function (id){
-                layer.confirm('确认删除权限', {icon: 1, title:'提示'}, function(index){
+                layer.confirm('确认删除角色', {icon: 1, title:'提示'}, function(index){
                     vn.$http.delete("{{url('admin/role')}}/"+id).then(function(response){
                         if(response.data.code == 400){
                             layer.close(index);
@@ -331,17 +327,23 @@ var vn = new Vue({
              *  [addRule 权限分配]
              */
             addRule: function (){
-                // let grant = [];
-                // $('.inverted').each(function(){
-                //    if($(this).prop('checked'))grant.push($(this).val());
-                // });
-                // this.role.rules = grant;
-                // this.$http.get("{{url('admin/role/rule')}}",this.role).then(function (response) {
-                //     console.log(response);
-                // }, function (error) {
-                //     console.log("系统错误");
-                // });
-                $('#modal-dialog').modal('hide');
+                let grant = [];
+                $('.inverted').each(function(){
+                   if($(this).prop('checked'))grant.push($(this).val());
+                });
+                this.role.rules = grant;
+                this.$http.post("{{url('admin/role/rule')}}",this.role).then(function (response) {
+                    if(response.data.code == 200){
+                        var ii = layer.load();
+                        //此处用setTimeout演示ajax的回调
+                        setTimeout(function(){
+                            layer.close(ii);
+                            $('#modal-dialog').modal('hide');
+                        }, 3000);
+                    }
+                }, function (error) {
+                    console.log("系统错误");
+                });
             }
         }
     });

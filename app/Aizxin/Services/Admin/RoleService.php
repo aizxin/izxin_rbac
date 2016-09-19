@@ -102,7 +102,7 @@ class RoleService extends CommonService
         return json_encode($this->permission->permissionList());
     }
     /**
-     *  [getPermissionRole description]
+     *  [getPermissionRole 角色的权限]
      *  izxin.com
      *  @author qingfeng
      *  @DateTime 2016-09-19T18:08:11+0800
@@ -111,7 +111,40 @@ class RoleService extends CommonService
      */
     public function getPermissionRole($id)
     {
-        // return $this->repository->getPermissionRole($id);
-        return $this->respondWithSuccess($this->repository->getPermissionRole($id), '添加成功');
+        $data = $this->repository->getPermissionRole($id);
+        return $this->respondWithSuccess($data, '添加成功');
+    }
+    /**
+     *  [permissionRole 角色的权限修改]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-19T19:45:58+0800
+     *  @param    [type]                   $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function editPermissionRole($request)
+    {
+        $input = $request->except('_token');
+        $res = $this->repository->editPermissionRole($input);
+        if($res){
+            return $this->respondWithSuccess(1, '添加成功');
+        }
+        return $this->respondWithErrors('添加失败',400);
+    }
+    /**
+     *  [destroy 角色删除]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-19T21:42:39+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
+    public function destroy($id)
+    {
+        $res = $this->repository->destroy($id);
+        if($res){
+            return $this->respondWithSuccess(1, '删除成功');
+        }
+        return $this->respondWithErrors('删除失败',400);
     }
 }

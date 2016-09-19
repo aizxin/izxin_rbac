@@ -38,7 +38,7 @@
                                         <option value="100">100</option>
                                     </select>
                                     @permission('admin.permission.create')
-                                    <a href="{{url('admin/permission/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
+                                    <a href="{{url('admin/user/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
                                     @endpermission
                                 </label>
                             </div>
@@ -55,7 +55,9 @@
                                         <th class="sorting" tabindex="0" aria-controls="data-table"
                                             rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">用户</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">角色</th>
+                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">邮箱</th>
+                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
+                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">角色管理</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
                                             colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
                                     </tr>
@@ -64,18 +66,24 @@
                                     <template v-for="vo in items">
                                         <tr class="gradeA odd" role="row" >
                                             <td class="sorting_1">@{{vo.id}}</td>
-                                            <td>@{{vo.display_name}}</td>
-                                            <td>@{{vo.sort}}</td>
+                                            <td>@{{vo.name}}</td>
+                                            <td>@{{vo.email}}</td>
                                             <td>
                                                 @permission('admin.permission.edit')
-                                                <a href="{{url('admin/permission')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
-                                                <i class="fa fa-edit"></i>
-                                                <span>修改</span>
+                                                <a type="button" class="btn btn-success" @click="userRole(vo.id)" href="#modal-dialog" data-toggle="modal">
+                                                <i class="fa fa-user"></i>
+                                                <span>修改角色</span>
                                                 </a>
                                                  @endpermission
                                             </td>
                                             <td>
-                                                 @permission('admin.permission.destroy')
+                                                @permission('admin.permission.edit')
+                                                <a href="{{url('admin/user')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
+                                                <i class="fa fa-edit"></i>
+                                                <span>修改</span>
+                                                </a>
+                                                 @endpermission
+                                                 @permission('admin.permission.edit')
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     <span>删除</span>
@@ -96,6 +104,26 @@
                             </div>
                         </div>
                     </div>
+                <!-- #modal-dialog -->
+            <div class="modal fade" id="modal-dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">角色分配</h4>
+                            <input type="hidden" v-model="role.id">
+                        </div>
+                        <div class="modal-body">
+                        <div class="container" style="width: 100%">
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
+                            <a href="javascript:;" class="btn btn-sm btn-success" @click="addRole()">保存</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
             <!-- end panel -->
@@ -117,7 +145,7 @@ var vn = new Vue({
                 'X-CSRF-TOKEN': "{{csrf_token()}}"
             }
         },
-        el: '#permission',
+        el: '#user',
         data: {
             pagination: {
                 total: 0,
@@ -130,28 +158,24 @@ var vn = new Vue({
             items: [],
             msg:'',
             pageSize:10,
-            name:''
+            name:'',
+            user:{},
+            role:[]
         },
         created: function () {
-            // this.fetchItems(this.pagination.current_page,this.pageSize,'');
+            this.fetchItems(this.pagination.current_page,this.pageSize,'');
+            this.$set('role',{!! $role !!});
+            console.log(this.role);
         },
         computed: {
             /**
              *  [isActived 判断选中]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:22:06+0800
-             *  @return   {Boolean}                [description]
              */
             isActived: function () {
                 return this.pagination.current_page;
             },
             /**
              *  [pagesNumber 页数]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:22:38+0800
-             *  @return   {[type]}                 [description]
              */
             pagesNumber: function () {
                 if (!this.pagination.to) {
@@ -176,32 +200,18 @@ var vn = new Vue({
         methods: {
             /**
              *  [fetchItems 获取权限]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:22:51+0800
-             *  @param    {[type]}                 page     [description]
-             *  @param    {[type]}                 pageSize [description]
-             *  @param    {[type]}                 name     [description]
-             *  @return   {[type]}                          [description]
              */
             fetchItems: function (page,pageSize,name) {
-                var data = {page: page,pageSize:pageSize,display_name:name};
-                this.$http.post("{{url('admin/permission/index')}}", data).then(function (response) {
+                var data = {page: page,pageSize:pageSize,name:name};
+                this.$http.post("{{url('admin/user/index')}}", data).then(function (response) {
                     this.$set('items', response.data.result.data);
                     this.$set('pagination', response.data.result.pagination);
                 }, function (error) {
-                    // handle error
+                    console.log("系统错误");
                 });
             },
             /**
              *  [changePage 监听页数]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:23:10+0800
-             *  @param    {[type]}                 page     [description]
-             *  @param    {[type]}                 pageSize [description]
-             *  @param    {[type]}                 name     [description]
-             *  @return   {[type]}                          [description]
              */
             changePage: function (page,pageSize,name) {
                 this.pagination.current_page = page;
@@ -209,12 +219,6 @@ var vn = new Vue({
             },
             /**
              *  [changePageSize 监听条数]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:23:53+0800
-             *  @param    {[type]}                 pageSize [description]
-             *  @param    {[type]}                 name     [description]
-             *  @return   {[type]}                          [description]
              */
             changePageSize: function (pageSize,name){
                 this.pagination.current_page = 1;
@@ -224,11 +228,6 @@ var vn = new Vue({
             },
             /**
              *  [changeName 监听name]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:24:22+0800
-             *  @param    {[type]}                 name [description]
-             *  @return   {[type]}                      [description]
              */
             changeName: function (name){
                 this.pagination.current_page = 1;
@@ -237,15 +236,10 @@ var vn = new Vue({
             },
             /**
              *  [destroy 删除权限]
-             *  izxin.com
-             *  @author qingfeng
-             *  @DateTime 2016-09-17T17:24:59+0800
-             *  @param    {[type]}                 id [description]
-             *  @return   {[type]}                    [description]
              */
             destroy:function (id){
                 layer.confirm('确认删除权限', {icon: 1, title:'提示'}, function(index){
-                    vn.$http.delete("{{url('admin/permission')}}/"+id).then(function(response){
+                    vn.$http.delete("{{url('admin/user')}}/"+id).then(function(response){
                         if(response.data.code == 400){
                             layer.close(index);
                             layer.msg(response.data.message);
@@ -264,7 +258,19 @@ var vn = new Vue({
                        layer.msg('系统错误');
                     });
                 });
-            }
+            },
+            /**
+             *  [role 权限显示]
+             */
+            userRole: function (id){
+                this.user.id = id;
+                console.log(id);
+                this.$http.get("{{url('admin/user')}}/"+id).then(function (response) {
+                    console.log(response.data.result);
+                }, function (error) {
+                    console.log("系统错误");
+                });
+            },
         }
     });
 </script> @endsection

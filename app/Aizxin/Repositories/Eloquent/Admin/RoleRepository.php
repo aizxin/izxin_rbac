@@ -44,6 +44,41 @@ class RoleRepository extends Repository
 	 */
 	public function getPermissionRole($id)
 	{
-		return $this->model->find($id)->permissions()->get(['id']);
+		return $this->model->find($id)->perms()->get(['id']);
+	}
+	/**
+	 *  [updatePermissionRole 角色的权限修改]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-19T19:53:42+0800
+	 *  @param    [type]                   $data [description]
+	 *  @return   [type]                         [description]
+	 */
+	public function editPermissionRole($data)
+	{
+		return $this->model->find($data['id'])->perms()->sync($data['rules']);
+	}
+	/**
+	 *  [destroy 角色删除]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-19T21:38:58+0800
+	 *  @param    [type]                   $id [description]
+	 *  @return   [type]                       [description]
+	 */
+	public function destroy($id)
+	{
+		return $this->model->destroy($id);
+	}
+	/**
+	 *  [roleList 权限]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-19T15:17:14+0800
+	 *  @return   [type]                   [description]
+	 */
+	public function roleList()
+	{
+		return $this->all(['id','display_name'])->toJson();
 	}
 }

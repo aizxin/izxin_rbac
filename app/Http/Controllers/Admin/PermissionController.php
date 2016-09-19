@@ -89,17 +89,6 @@ class PermissionController extends Controller
         return view('admin.permission.add',compact('list','rules'))->with('rule',$rule);
     }
     /**
-     *  [destroy 删除权限]
-     *  izxin.com
-     *  @author qingfeng
-     *  @DateTime 2016-09-17T17:04:59+0800
-     *  @return   [type]                   [description]
-     */
-    public function destroy($id)
-    {
-        return $this->service->destroy($id);
-    }
-    /**
      *  [update 权限修改操作]
      *  izxin.com
      *  @author qingfeng
@@ -111,5 +100,16 @@ class PermissionController extends Controller
     public function update(Request $request,$id)
     {
         return $this->service->create($request);
+    }
+    /**
+     *  [destroy 删除权限]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-17T17:04:59+0800
+     *  @return   [type]                   [description]
+     */
+    public function destroy($id)
+    {
+        return $this->service->destroy($id);
     }
 }

@@ -16,13 +16,13 @@ class UserValidator extends LaravelValidator {
             // 'email' => ['required', 'email', 'exists:users'], //查询用户
             'email' => ['required', 'email', 'unique:users'], //创建用户
             // 'email' => ['required', 'mobile_phone'],
-            'password' => ['required', 'between:6,16','confirmed'],
+            'password' => ['required','between:6,12','confirmed'],
             'password_confirmation' => ['required','between:6,12']
         ],
         ValidatorInterface::RULE_UPDATE => [
             'name' => ['required'],
             'email' => ['required', 'email'], //创建用户
-            'password' => ['required', 'between:6,16','confirmed'],
+            'password' => ['required','between:6,12','confirmed'],
             'password_confirmation' => ['required','between:6,12']
         ],
     ];
