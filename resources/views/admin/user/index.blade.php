@@ -4,7 +4,7 @@
     <ol class="breadcrumb pull-right">
         <li><a href="javascript:;">权限管理</a></li>
         <!--<li><a href="javascript:;">权限列表</a></li>-->
-        <li class="active">权限列表</li>
+        <li class="active">管理员列表</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
@@ -24,9 +24,9 @@
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                     </div>
-                    <h4 class="panel-title">权限列表</h4>
+                    <h4 class="panel-title">管理员列表</h4>
                 </div>
-                <div class="panel-body" id="permission">
+                <div class="panel-body" id="user">
                     <div class="table-responsive">
                         <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
                             <div class="dataTables_length" id="data-table_length">
@@ -53,11 +53,9 @@
                                         <th class="sorting_asc" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending"
                                             style="width: 271px;">编号</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table"
-                                            rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">名称</th>
+                                            rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">用户</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 360px;">排序</th>
-                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">操作</th>
+                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">角色</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
                                             colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
                                     </tr>
@@ -85,52 +83,6 @@
                                                 @endpermission
                                             </td>
                                         </tr>
-                                            <template v-for="v in vo.child">
-                                                <tr class="gradeA even" role="row" >
-                                                    <td class="sorting_1">@{{v.id}}</td>
-                                                    <td>┗━@{{v.display_name}}</td>
-                                                    <td>@{{v.sort}}</td>
-                                                    <td>
-                                                        @permission('admin.permission.edit')
-                                                        <a href="{{url('admin/permission')}}/@{{v.id}}/edit" class="btn btn-primary delete">
-                                                            <i class="fa fa-edit"></i>
-                                                            <span>修改</span>
-                                                        </a>
-                                                        @endpermission
-                                                    </td>
-                                                    <td>
-                                                        @permission('admin.permission.destroy')
-                                                        <button type="button" class="btn btn-danger delete" @click="destroy(v.id)">
-                                                            <i class="glyphicon glyphicon-trash"></i>
-                                                            <span>删除</span>
-                                                        </button>
-                                                        @endpermission
-                                                    </td>
-                                                </tr>
-                                                <template v-for="t in v.child">
-                                                    <tr class="gradeA even" role="row" >
-                                                        <td class="sorting_1">@{{t.id}}</td>
-                                                        <td>┗━━@{{t.display_name}}</td>
-                                                        <td>@{{t.sort}}</td>
-                                                        <td>
-                                                            @permission('admin.permission.edit')
-                                                            <a href="{{url('admin/permission')}}/@{{t.id}}/edit" class="btn btn-primary delete">
-                                                                <i class="fa fa-edit"></i>
-                                                                <span>修改</span>
-                                                            </a>
-                                                            @endpermission
-                                                        </td>
-                                                        <td>
-                                                            @permission('admin.permission.destroy')
-                                                            <button type="button" class="btn btn-danger delete" @click="destroy(t.id)">
-                                                                <i class="glyphicon glyphicon-trash"></i>
-                                                                <span>删除</span>
-                                                            </button>
-                                                            @endpermission
-                                                    </td>
-                                                    </tr>
-                                                </template>
-                                            </template>
                                     </template>
                                 </tbody>
                             </table>
@@ -181,7 +133,7 @@ var vn = new Vue({
             name:''
         },
         created: function () {
-            this.fetchItems(this.pagination.current_page,this.pageSize,'');
+            // this.fetchItems(this.pagination.current_page,this.pageSize,'');
         },
         computed: {
             /**

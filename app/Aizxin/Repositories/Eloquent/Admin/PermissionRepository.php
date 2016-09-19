@@ -128,18 +128,7 @@ class PermissionRepository extends Repository
 		if(count($results['data'])){
 			$results['data'] = $this->childMenu($results['data']);
 		}
-		$response = [
-	        'pagination' => [
-	            'total' => $results['total'],
-	            'per_page' => $results['per_page'],
-	            'current_page' => $results['current_page'],
-	            'last_page' => $results['last_page'],
-	            'from' => $results['from'],
-	            'to' => $results['to']
-	        ],
-	        'data' => $results['data']
-	    ];
-    	return $response;
+    	return aizxin_paginate($results);
 	}
 	/**
 	 *  [destroyPermission 删除权限]
@@ -208,5 +197,16 @@ class PermissionRepository extends Repository
 			$arr['fMenu'] = $fdata[0];
 		}
 		return $arr;
+	}
+	/**
+	 *  [permissionList 权限]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-19T15:17:14+0800
+	 *  @return   [type]                   [description]
+	 */
+	public function permissionList()
+	{
+		return sortMenu($this->all(['id','display_name','parent_id'])->toArray());
 	}
 }

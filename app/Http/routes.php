@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'=>'web'],
         // 后台角色
         Route::any('role/index', 'RoleController@index')->name('admin.role.index');
         Route::post('role/store', 'RoleController@store')->name('admin.role.store');
+        Route::post('role/rule', 'RoleController@rule')->name('admin.role.rule');
         Route::resource('role','RoleController');
         // 管理员
         Route::any('user/index', 'UserController@index')->name('admin.user.index');

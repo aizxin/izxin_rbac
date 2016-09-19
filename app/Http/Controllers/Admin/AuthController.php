@@ -10,8 +10,18 @@ use Aizxin\Services\Admin\AuthService;
 
 class AuthController extends Controller
 {
+    /**
+     *  [$service description]
+     *  @var [type]
+     */
     protected $service;
-
+    /**
+     *  [__construct description]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-19T11:59:53+0800
+     *  @param    AuthService              $service [description]
+     */
     public function __construct(AuthService $service){
         $this->service  = $service;
     }

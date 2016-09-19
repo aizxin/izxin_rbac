@@ -29,7 +29,7 @@ class PermissionValidator extends LaravelValidator {
         ],
     ];
     /**
-     *  [$messages 用户登录错误信息]
+     *  [$messages 权限规则错误信息]
      *  @var [type]
      */
     protected $messages = [

@@ -25,7 +25,10 @@
         "psr-4": {
             "App\\": "app/",
             "Aizxin\\": "app/Aizxin"
-        }
+        },
+        "files": [
+            "app/Aizxin/Tools/Helper.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

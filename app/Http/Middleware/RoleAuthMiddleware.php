@@ -34,19 +34,19 @@ class RoleAuthMiddleware
     public function handle($request, Closure $next, $permissions)
     {
         // dd($this->auth->user()->hasRole('admin'));
-        $currRouteName = Route::currentRouteName(); // 当前路由别名
-        $previousUrl = URL::previous(); // 用户访问的上一页
-        if(!$this->auth->user()->can($currRouteName) ){ // 如果是游客或者没有权限跳转到首页
-            if($request->ajax() && ($request->getMethod() != 'GET')) {
-                return response()->json([
-                    'status' => -1,
-                    'code' => 400,
-                    'message' => '您没有权限执行此操作'
-                ]);
-            } else {
-                return response()->view('errors.403', compact('previousUrl'));
-            }
-        }
+        // $currRouteName = Route::currentRouteName(); // 当前路由别名
+        // $previousUrl = URL::previous(); // 用户访问的上一页
+        // if(!$this->auth->user()->can($currRouteName) ){ // 如果是游客或者没有权限跳转到首页
+        //     if($request->ajax() && ($request->getMethod() != 'GET')) {
+        //         return response()->json([
+        //             'status' => -1,
+        //             'code' => 400,
+        //             'message' => '您没有权限执行此操作'
+        //         ]);
+        //     } else {
+        //         return response()->view('errors.403', compact('previousUrl'));
+        //     }
+        // }
         return $next($request);
     }
 }
