@@ -120,7 +120,7 @@ class RoleController extends Controller
      *  @param    Request                  $request [description]
      *  @return   [type]                            [description]
      */
-    public function rule(Request $request)
+    public function permission(Request $request)
     {
         return $this->service->editPermissionRole($request);
     }

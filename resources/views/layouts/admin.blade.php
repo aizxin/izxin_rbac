@@ -56,7 +56,7 @@
 	<!-- begin #page-loader -->
 	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
 	<!-- end #page-loader -->
-	
+
 	<!-- begin #page-container -->
 	<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
 		<!-- begin #header -->
@@ -73,76 +73,9 @@
 					</button>
 				</div>
 				<!-- end mobile sidebar expand / collapse button -->
-				
+
 				<!-- begin header navigation right -->
 				<ul class="nav navbar-nav navbar-right">
-					<!--<li>
-						<form class="navbar-form full-width">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Enter keyword" />
-								<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-							</div>
-						</form>
-					</li>
-					<li class="dropdown">
-						<a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
-							<i class="fa fa-bell-o"></i>
-							<span class="label">5</span>
-						</a>
-						<ul class="dropdown-menu media-list pull-right animated fadeInDown">
-                            <li class="dropdown-header">Notifications (5)</li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-bug media-object bg-red"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Server Error Reports</h6>
-                                        <div class="text-muted f-s-11">3 minutes ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><img src="/assets/img/user-1.jpg" class="media-object" alt="" /></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">John Smith</h6>
-                                        <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                        <div class="text-muted f-s-11">25 minutes ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><img src="/assets/img/user-2.jpg" class="media-object" alt="" /></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Olivia</h6>
-                                        <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                        <div class="text-muted f-s-11">35 minutes ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-plus media-object bg-green"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading"> New User Registered</h6>
-                                        <div class="text-muted f-s-11">1 hour ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-envelope media-object bg-blue"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading"> New Email From John</h6>
-                                        <div class="text-muted f-s-11">2 hour ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="dropdown-footer text-center">
-                                <a href="javascript:;">View more</a>
-                            </li>
-						</ul>
-					</li>-->
 					<li class="dropdown navbar-user">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
 							<img src="/assets/img/user-13.jpg" alt="" /> 
@@ -151,9 +84,6 @@
 						<ul class="dropdown-menu animated fadeInLeft">
 							<li class="arrow"></li>
 							<li><a href="javascript:;">修改密码</a></li>
-							<!--<li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
-							<li><a href="javascript:;">Calendar</a></li>
-							<li><a href="javascript:;">Setting</a></li>-->
 							<li class="divider"></li>
 							<li><a href="{{url('admin/logout')}}">Log Out</a></li>
 						</ul>
@@ -169,9 +99,10 @@
 			<!-- begin sidebar scrollbar -->
 			<div data-scrollbar="true" data-height="100%">
 				<ul class="nav">
-					<!-- @inject('menu','Aizxin\Presenters\Admin\MenuPresenter') -->
+					@inject('menu','Aizxin\Presenters\Admin\MenuPresenter')
 					<li class="nav-header">管理主面板</li>
-					<li class="has-sub active">
+					{!! $menu->sidebarMenus($slidebar) !!}
+					<!-- <li class="has-sub active">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
 						    <i class="fa fa-laptop"></i>
@@ -197,7 +128,7 @@
 					<li class="has-sub">
 						<a href="javascript:;">
 							<span class="badge pull-right">10</span>
-							<i class="fa fa-shopping-cart"></i> 
+							<i class="fa fa-shopping-cart"></i>
 							<span>订单管理</span>
 						</a>
 						<ul class="sub-menu">
@@ -217,7 +148,7 @@
 						    <li><a href="{{url('admin/user/index')}}">用户列表</a></li>
 						    <li><a href="{{url('admin/role/index')}}">角色列表</a></li>
 						</ul>
-					</li>
+					</li> -->
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
 			        <!-- end sidebar minify button -->
@@ -228,11 +159,10 @@
 		</div>
 		<div class="sidebar-bg"></div>
 		<!-- end #sidebar -->
-		
+
 		<!-- begin #content -->
 		@yield('content')
 		<!-- end #content -->
-		
         <!-- begin theme-panel -->
         <div class="theme-panel">
             <a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i class="fa fa-cog"></i></a>
@@ -309,13 +239,13 @@
             </div>
         </div>
         <!-- end theme-panel -->
-		
+
 		<!-- begin scroll to top btn -->
 		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
 		<!-- end scroll to top btn -->
 	</div>
 	<!-- end page container -->
-	
+
 	<!-- ================== BEGIN BASE JS ================== -->
 	<script src="/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
 	<script src="/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
@@ -329,7 +259,7 @@
 	<script src="/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
 	<!-- ================== END BASE JS ================== -->
-	
+
 	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
     <script src="/assets/plugins/morris/raphael.min.js"></script>
     <script src="/assets/plugins/morris/morris.js"></script>
@@ -354,7 +284,7 @@
 	<script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
 	<script src="/assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
 	<script src="/assets/js/form-plugins.demo.min.js"></script>
-    
+
 	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="/assets/plugins/switchery/switchery.min.js"></script>
 	<script src="/assets/plugins/powerange/powerange.min.js"></script>

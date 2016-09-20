@@ -62,7 +62,7 @@
                                         <input type="password" v-model="u.password_confirmation" name="passwordConfirmation" v-validate:passwordConfirmation="{minlength:6,maxlength:12}" class="form-control input" placeholder="确认密码">
                                     </div>
                                 </div>
-                                @permission('admin.permission.store')
+                                @permission('admin.user.store')
                                 <div class="form-group">
                                     <div class="col-md-9 col-md-offset-3">
                                         <button @click="addUser()" :disabled="$userValidation.invalid" type="button" class="btn btn-success btn-lg m-r-5" style="width: 100px">保 存</button>
@@ -94,11 +94,11 @@
     <script src="/layer/layer.js"></script>
     <!-- ================== END vue JS ================== -->
     <script>
-    	$(document).ready(function() {
-    		App.init();
+        $(document).ready(function() {
+            App.init();
             FormPlugins.init();
             FormSliderSwitcher.init();
-    	});
+        });
         new Vue({
             el: '#user',
             http: {

@@ -92,6 +92,14 @@ class UserService extends CommonService
     {
         return $this->repository->find($id)->toJson();
     }
+    /**
+     *  [destroy 管理员删除]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-20T12:39:33+0800
+     *  @param    [type]                   $id [description]
+     *  @return   [type]                       [description]
+     */
     public function destroy($id)
     {
         $res = $this->repository->destroy($id);
@@ -123,5 +131,22 @@ class UserService extends CommonService
     public function roleList()
     {
        return $this->role->roleList();
+    }
+    /**
+     *  [updateRoles 角色更新]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-20T12:37:23+0800
+     *  @param    [type]                   $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function updateRoles($request)
+    {
+        $input = $request->except('_token');
+        $res = $this->repository->updateRoles($input);
+        if($res){
+            return $this->respondWithSuccess(1, '添加成功');
+        }
+        return $this->respondWithErrors('添加失败',400);
     }
 }

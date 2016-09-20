@@ -55,10 +55,7 @@
                                         <th class="sorting" tabindex="0" aria-controls="data-table"
                                             rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 392px;">名称</th>
                                         <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 360px;">排序</th>
-                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 237px;">操作</th>
-                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
+                                            colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 360px;">排序</th>                                        <th class="sorting" tabindex="0" aria-controls="data-table" rowspan="1"
                                             colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 182px;">操作</th>
                                     </tr>
                                 </thead>
@@ -74,10 +71,8 @@
                                                 <i class="fa fa-edit"></i>
                                                 <span>修改</span>
                                                 </a>
-                                                 @endpermission
-                                            </td>
-                                            <td>
-                                                 @permission('admin.permission.destroy')
+                                                @endpermission
+                                                @permission('admin.permission.destroy')
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     <span>删除</span>
@@ -97,8 +92,6 @@
                                                             <span>修改</span>
                                                         </a>
                                                         @endpermission
-                                                    </td>
-                                                    <td>
                                                         @permission('admin.permission.destroy')
                                                         <button type="button" class="btn btn-danger delete" @click="destroy(v.id)">
                                                             <i class="glyphicon glyphicon-trash"></i>
@@ -119,8 +112,6 @@
                                                                 <span>修改</span>
                                                             </a>
                                                             @endpermission
-                                                        </td>
-                                                        <td>
                                                             @permission('admin.permission.destroy')
                                                             <button type="button" class="btn btn-danger delete" @click="destroy(t.id)">
                                                                 <i class="glyphicon glyphicon-trash"></i>
@@ -155,9 +146,9 @@
 @endsection @section('my-js')
 <script src="/layer/layer.js"></script>
 <script>
-	$(document).ready(function() {
-		App.init();
-	});
+    $(document).ready(function() {
+        App.init();
+    });
 var vn = new Vue({
         http: {
             root: '/root',

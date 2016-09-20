@@ -106,4 +106,16 @@ class UserController extends Controller
     {
         return $this->service->create($request);
     }
+    /**
+     *  [role 角色更新]
+     *  izxin.com
+     *  @author qingfeng
+     *  @DateTime 2016-09-20T12:00:37+0800
+     *  @param    Request                  $request [description]
+     *  @return   [type]                            [description]
+     */
+    public function role(Request $request)
+    {
+        return $this->service->updateRoles($request);
+    }
 }

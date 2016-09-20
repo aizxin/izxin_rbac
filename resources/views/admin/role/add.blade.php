@@ -57,7 +57,7 @@
                                             placeholder="这里填写当前角色的简要描述"></textarea>
                                     </div>
                                 </div>
-                                @permission('admin.permission.store')
+                                @permission('admin.role.store')
                                 <div class="form-group">
                                     <div class="col-md-9 col-md-offset-3">
                                         <button @click="addRole()" :disabled="$roleValidation.invalid" type="button" class="btn btn-success btn-lg m-r-5" style="width: 100px">保 存</button>
@@ -89,11 +89,11 @@
     <script src="/layer/layer.js"></script>
     <!-- ================== END vue JS ================== -->
     <script>
-    	$(document).ready(function() {
-    		App.init();
+        $(document).ready(function() {
+            App.init();
             FormPlugins.init();
             FormSliderSwitcher.init();
-    	});
+        });
         new Vue({
             el: '#role',
             http: {

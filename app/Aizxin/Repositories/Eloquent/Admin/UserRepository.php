@@ -57,4 +57,16 @@ class UserRepository extends Repository
 	{
 		return $this->model->find($id)->roles()->get(['id','name']);
 	}
+	/**
+	 *  [updateRoles 管理员的角色更新]
+	 *  izxin.com
+	 *  @author qingfeng
+	 *  @DateTime 2016-09-20T12:10:30+0800
+	 *  @param    [type]                   $input [description]
+	 *  @return   [type]                          [description]
+	 */
+	public function updateRoles($input)
+	{
+		return $this->model->find($input['user_id'])->roles()->sync($input['roles']);
+	}
 }

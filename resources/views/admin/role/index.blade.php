@@ -37,7 +37,7 @@
                                         <option value="50">50</option>
                                         <option value="100">100</option>
                                     </select>
-                                    @permission('admin.permission.create')
+                                    @permission('admin.role.create')
                                     <a href="{{url('admin/role/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">角色添加</a>
                                     @endpermission
                                 </label>
@@ -66,19 +66,21 @@
                                             <td class="sorting_1">@{{vo.id}}</td>
                                             <td>@{{vo.display_name}}</td>
                                             <td>
+                                                @permission('admin.role.show')
                                                 <a type="button" class="btn btn-success" @click="permission(vo.id)" href="#modal-dialog" data-toggle="modal">
                                                     <i class="fa fa-group"></i>
                                                     <span>权限分配</span>
                                                 </a>
+                                                @endpermission
                                             </td>
                                             <td>
-                                                @permission('admin.permission.edit')
+                                                @permission('admin.role.edit')
                                                 <a href="{{url('admin/role')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
                                                 <i class="fa fa-edit"></i>
                                                 <span>修改</span>
                                                 </a>
                                                  @endpermission
-                                                 @permission('admin.permission.edit')
+                                                 @permission('admin.role.destroy')
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     <span>删除</span>
@@ -166,10 +168,10 @@
 <script src="/layer/layer.js"></script>
 <script src="/assets/js/ui-modal-notification.demo.min.js"></script>
 <script>
-	$(document).ready(function() {
-		App.init();
+    $(document).ready(function() {
+        App.init();
         Notification.init();
-	});
+    });
     $(function() {
         $('.r1 td:nth-child(1) .inverted').on('click', function() {
             if ($(this).prop('checked')) {
@@ -332,7 +334,7 @@ var vn = new Vue({
                    if($(this).prop('checked'))grant.push($(this).val());
                 });
                 this.role.rules = grant;
-                this.$http.post("{{url('admin/role/rule')}}",this.role).then(function (response) {
+                this.$http.post("{{url('admin/role/permission')}}",this.role).then(function (response) {
                     if(response.data.code == 200){
                         var ii = layer.load();
                         //此处用setTimeout演示ajax的回调
@@ -340,6 +342,10 @@ var vn = new Vue({
                             layer.close(ii);
                             $('#modal-dialog').modal('hide');
                         }, 3000);
+                    }
+                    if(response.data.code == 400){
+                        $('#modal-dialog').modal('hide');
+                        layer.msg(response.data.message)
                     }
                 }, function (error) {
                     console.log("系统错误");

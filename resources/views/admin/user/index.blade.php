@@ -37,7 +37,7 @@
                                         <option value="50">50</option>
                                         <option value="100">100</option>
                                     </select>
-                                    @permission('admin.permission.create')
+                                    @permission('admin.user.create')
                                     <a href="{{url('admin/user/create')}}"  class="btn btn-primary m-r-5 m-b-5" style="height: 32px;margin-top: 4px;">权限添加</a>
                                     @endpermission
                                 </label>
@@ -69,7 +69,7 @@
                                             <td>@{{vo.name}}</td>
                                             <td>@{{vo.email}}</td>
                                             <td>
-                                                @permission('admin.permission.edit')
+                                                @permission('admin.user.show')
                                                 <a type="button" class="btn btn-success" @click="userRole(vo.id)" href="#modal-dialog" data-toggle="modal">
                                                 <i class="fa fa-user"></i>
                                                 <span>修改角色</span>
@@ -77,13 +77,13 @@
                                                  @endpermission
                                             </td>
                                             <td>
-                                                @permission('admin.permission.edit')
+                                                @permission('admin.user.edit')
                                                 <a href="{{url('admin/user')}}/@{{vo.id}}/edit" class="btn btn-primary delete">
                                                 <i class="fa fa-edit"></i>
                                                 <span>修改</span>
                                                 </a>
                                                  @endpermission
-                                                 @permission('admin.permission.edit')
+                                                 @permission('admin.user.destroy')
                                                 <button type="button" class="btn btn-danger delete" @click="destroy(vo.id)">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     <span>删除</span>
@@ -114,8 +114,12 @@
                             <input type="hidden" v-model="role.id">
                         </div>
                         <div class="modal-body">
-                        <div class="container" style="width: 100%">
-                        </div>
+                            <div class="container" style="width: 100%">
+                                <select class="form-control selectpicker input" id="parent_id" data-size="10" v-model="user.role_id" data-live-search="true" data-style="btn-white">
+                                        <option v-bind:value="0">角色分配</option>
+                                        <option v-bind:value="vo.id" v-for="vo in role">@{{vo.display_name}}</option>
+                                    </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">取消</a>
@@ -135,9 +139,9 @@
 @endsection @section('my-js')
 <script src="/layer/layer.js"></script>
 <script>
-	$(document).ready(function() {
-		App.init();
-	});
+    $(document).ready(function() {
+        App.init();
+    });
 var vn = new Vue({
         http: {
             root: '/root',
@@ -159,13 +163,12 @@ var vn = new Vue({
             msg:'',
             pageSize:10,
             name:'',
-            user:{},
+            user:{roles:[]},
             role:[]
         },
         created: function () {
             this.fetchItems(this.pagination.current_page,this.pageSize,'');
             this.$set('role',{!! $role !!});
-            console.log(this.role);
         },
         computed: {
             /**
@@ -260,17 +263,38 @@ var vn = new Vue({
                 });
             },
             /**
-             *  [role 权限显示]
+             *  [userRole 角色显示]
              */
             userRole: function (id){
-                this.user.id = id;
-                console.log(id);
+                this.user.user_id = id;
+                this.$set('user.role_id',0)
                 this.$http.get("{{url('admin/user')}}/"+id).then(function (response) {
-                    console.log(response.data.result);
+                    if(response.data.result.length > 0){
+                        this.$set('user.role_id',response.data.result[0].id)
+                    }
                 }, function (error) {
                     console.log("系统错误");
                 });
             },
+            addRole: function (){
+                this.user.roles.push(this.user.role_id);
+                this.$http.post("{{url('admin/user/role')}}",this.user).then(function (response) {
+                    if(response.data.code == 200){
+                        var ii = layer.load();
+                        //此处用setTimeout演示ajax的回调
+                        setTimeout(function(){
+                            layer.close(ii);
+                            $('#modal-dialog').modal('hide');
+                        }, 3000);
+                    }
+                    if(response.data.code == 400){
+                        $('#modal-dialog').modal('hide');
+                        layer.msg(response.data.message)
+                    }
+                }, function (error) {
+                    console.log("系统错误");
+                });
+            }
         }
     });
 </script> @endsection
