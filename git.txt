@@ -2,5 +2,5 @@
 git init
 git add .
 git commit -m "init"
-git remote add origin https://github.com/aizxin/izxin.git
+git remote add origin https://github.com/aizxin/izxin_rbac.git
 git push -u origin master
