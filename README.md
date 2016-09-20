@@ -8,7 +8,13 @@ laravel 5.2.*
 		"Aizxin\\": "app/Aizxin"
 
 # 安装
+- 问题 角色删除
+	`Class name must be a valid object or a string`
+	找到zizaco/entrust下EntrustRoleTrait.php的51行
+    把`Config::get('auth.model')`改为`Config::get('auth.providers.admins.model')`
+
 - 安装,`redis`
+
 - **clone**代码到本地, `git clone https://github.com/aizxin/izxin_rbac.git`
 
 - 项目目录下执行 `composer install`
