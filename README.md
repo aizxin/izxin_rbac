@@ -8,7 +8,7 @@ laravel 5.2.*
 		"Aizxin\\": "app/Aizxin"
 
 # 安装
-- 安装,redis
+- 安装,`redis`
 - **clone**代码到本地, `git clone https://github.com/aizxin/izxin.git`
 
 - 项目目录下执行 `composer install`
@@ -22,3 +22,5 @@ laravel 5.2.*
 - 项目目录下执行 `php artisan serve` 使用默认的 `http://localhost:8000`访问首页
 
 - 默认后台账号: `admin@admin.com` 密码 : `admin888`
+
+- 测试后台账号: `demo@demo.com` 密码 : `demo888`
