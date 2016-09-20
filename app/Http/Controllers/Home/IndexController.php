@@ -11,8 +11,6 @@ class IndexController extends Controller
 {
     public function index()
     {
-        // Session::put('member11', "auth()->user()->toArray()");
-        dump(session('key'));
-        dd(env('SESSION_DRIVER'));
+        return view('welcome');
     }
 }
