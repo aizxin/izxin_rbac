@@ -9,7 +9,7 @@ laravel 5.2.*
 
 # 安装
 - 安装,`redis`
-- **clone**代码到本地, `git clone https://github.com/aizxin/izxin.git`
+- **clone**代码到本地, `git clone https://github.com/aizxin/izxin_rbac.git`
 
 - 项目目录下执行 `composer install`
 
